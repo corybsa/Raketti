@@ -20,7 +20,9 @@ namespace Raketti.Shared
 		[Required]
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
-		public string DisplayName { get; }
+		// Value generated on add or update
+		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+		public string DisplayName { get; set; }
 		public string Email { get; set; }
 		public string NormalizedEmail { get; set; }
 		public string PasswordHash { get; set; }

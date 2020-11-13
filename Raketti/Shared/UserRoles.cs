@@ -11,10 +11,13 @@ namespace Raketti.Shared
 	{
 		[Key]
 		public int UserRoleId { get; set; }
+		[ForeignKey("User")]
 		public int UserId { get; set; }
 		public int RoleId { get; set; }
 		public string LocationCode { get; set; }
-		public int QueueId { get; set; }
-		public bool QueueAssignable { get; set; }
+		public int? QueueId { get; set; }
+		public bool? QueueAssignable { get; set; }
+
+		public User User { get; set; }
 	}
 }

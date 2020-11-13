@@ -17,9 +17,12 @@ namespace Raketti.Server.Data
 		public DbSet<UserRoles> UserRoles { get; set; }
 		public DbSet<Student> Students { get; set; }
 
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			base.OnConfiguring(optionsBuilder);
+			// computed column
+			modelBuilder.Entity<User>()
+				.Property(b => b.DisplayName)
+				.HasComputedColumnSql("(Trim(([FirstName]+' ')+isnull([LastName],'')))");
 		}
 	}
 }

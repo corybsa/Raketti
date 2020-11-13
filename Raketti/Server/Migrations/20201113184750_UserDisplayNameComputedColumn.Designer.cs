@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Raketti.Server.Data;
 
 namespace Raketti.Server.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    partial class SqlContextModelSnapshot : ModelSnapshot
+    [Migration("20201113184750_UserDisplayNameComputedColumn")]
+    partial class UserDisplayNameComputedColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,10 +129,10 @@ namespace Raketti.Server.Migrations
                     b.Property<string>("LocationCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("QueueAssignable")
+                    b.Property<bool>("QueueAssignable")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("QueueId")
+                    b.Property<int>("QueueId")
                         .HasColumnType("int");
 
                     b.Property<int>("RoleId")
@@ -141,20 +143,7 @@ namespace Raketti.Server.Migrations
 
                     b.HasKey("UserRoleId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("userRolesORM");
-                });
-
-            modelBuilder.Entity("Raketti.Shared.UserRoles", b =>
-                {
-                    b.HasOne("Raketti.Shared.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }
