@@ -1,0 +1,10 @@
+Raketti/.vs
+Raketti/Client/bin
+Raketti/Client/obj
+Raketti/Server/bin
+Raketti/Server/obj
+Raketti/Shared/bin
+Raketti/Shared/obj
+
+Raketti/Server/appsettings.json
+Raketti/Server/appsettings.Development.json

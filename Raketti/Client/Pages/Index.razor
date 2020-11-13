@@ -1,0 +1,14 @@
+﻿@page "/"
+@inject IToastService ToastService
+
+<h1 @onclick="test">Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+@code {
+	public void test() {
+		ToastService.ShowSuccess("angel sucks", ":)");
+	}
+}
