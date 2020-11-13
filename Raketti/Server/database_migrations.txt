@@ -1,0 +1,11 @@
+﻿Step 1: Install EF CLI tools
+	> dotnet tool install --global dotnet-ef
+	> dotnet tool update --global dotnet-ef
+
+Step 2: Create or modify models
+
+Step 3: Migrate
+	> dotnet ef migrations add <NameOfMigration>
+	> dotnet ef database update
+
+Step 4: Done.
