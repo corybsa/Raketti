@@ -11,6 +11,7 @@ namespace Raketti.Shared
 	{
 		[Key]
 		public int UserRoleId { get; set; }
+		// Use the User model as a foreign key
 		[ForeignKey("User")]
 		public int UserId { get; set; }
 		public int RoleId { get; set; }
@@ -18,6 +19,7 @@ namespace Raketti.Shared
 		public int? QueueId { get; set; }
 		public bool? QueueAssignable { get; set; }
 
+		// this is required for the foreign key
 		public User User { get; set; }
 	}
 }
