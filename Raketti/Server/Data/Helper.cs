@@ -12,11 +12,13 @@ namespace Raketti.Server
 	{
 		private readonly SqlConnectionConfiguration _sql;
 
-		public Helper(SqlConnectionConfiguration sql) {
+		public Helper(SqlConnectionConfiguration sql)
+		{
 			_sql = sql;
 		}
 
-		public async Task<IEnumerable<T>> ExecStoredProcedure<T>(string proc, DynamicParameters parameters = null) {
+		public async Task<IEnumerable<T>> ExecStoredProcedure<T>(string proc, DynamicParameters parameters = null)
+		{
 			IEnumerable<T> results;
 
 			using (var conn = new SqlConnection(_sql.Value))

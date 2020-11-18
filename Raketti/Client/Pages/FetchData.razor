@@ -1,46 +1,47 @@
 @page "/fetchdata"
 @using Raketti.Shared
 @inject HttpClient Http
+@inject Raketti.Client.Services.IUserService UserService
 
 <h1>Weather forecast</h1>
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (forecasts == null)
+@if (users == null)
 {
-    <p><em>Loading...</em></p>
+	<p><em>Loading...</em></p>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>First name</th>
+				<th>Last name</th>
+				<th>Display name</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var user in users)
+			{
+				<tr>
+					<td>@user.UserId</td>
+					<td>@user.FirstName</td>
+					<td>@user.LastName</td>
+					<td>@user.DisplayName</td>
+				</tr>
+			}
+		</tbody>
+	</table>
 }
 
 @code {
-    private WeatherForecast[] forecasts;
+	IEnumerable<User> users;
 
-    protected override async Task OnInitializedAsync()
-    {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
-    }
+	protected override async Task OnInitializedAsync()
+	{
+		users = await UserService.GetUsers();
+	}
 
 }
