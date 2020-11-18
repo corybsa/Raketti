@@ -8,6 +8,6 @@ namespace Raketti.Client.Services
 {
 	public interface IUserService
 	{
-		Task<IEnumerable<User>> GetUsers();
+		Task<List<User>> GetUsers();
 	}
 }

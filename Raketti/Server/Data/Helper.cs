@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using System.Linq;
 using Dapper;
 using Raketti.Server.Data;
 
@@ -17,9 +18,9 @@ namespace Raketti.Server
 			_sql = sql;
 		}
 
-		public async Task<IEnumerable<T>> ExecStoredProcedure<T>(string proc, DynamicParameters parameters = null)
+		public async Task<List<T>> ExecStoredProcedure<T>(string proc, DynamicParameters parameters = null)
 		{
-			IEnumerable<T> results;
+			List<T> results;
 
 			using (var conn = new SqlConnection(_sql.Value))
 			{
@@ -30,7 +31,7 @@ namespace Raketti.Server
 
 				try
 				{
-					results = await conn.QueryAsync<T>(proc, parameters, commandType: CommandType.StoredProcedure);
+					results = (await conn.QueryAsync<T>(proc, parameters, commandType: CommandType.StoredProcedure)).ToList();
 				}
 				catch (Exception e)
 				{
