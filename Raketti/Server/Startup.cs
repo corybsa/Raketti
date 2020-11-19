@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using Raketti.Server.Data;
 
 namespace Raketti.Server
@@ -24,7 +23,7 @@ namespace Raketti.Server
 		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddDbContext<SqlContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MSSQL")));
+			services.AddSingleton(new SqlConfiguration(Configuration.GetConnectionString("MSSQL")));
 			services.AddControllersWithViews();
 			services.AddRazorPages();
 		}
