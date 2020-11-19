@@ -21,6 +21,9 @@ Welcome to your new app.
 	{
 		var auth = new AuthInfo { Username = "LCSD\\corybsa", Password = "" };
 		var result = AuthService.Login(auth);
+
+		// clear password from memory
+		auth.Password = null;
 		Console.WriteLine(result);
 	}
 }

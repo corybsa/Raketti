@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using System.Linq;
 using Raketti.Server.Data;
 using System;
+using Microsoft.Net.Http.Headers;
 
 namespace Raketti.Server
 {
@@ -27,6 +28,7 @@ namespace Raketti.Server
 			services.AddSingleton(new SqlConfiguration(Configuration.GetConnectionString("MSSQL")));
 			services.AddControllersWithViews();
 			services.AddRazorPages();
+			services.AddOptions();
 			services.AddHsts(options =>
 			{
 				options.Preload = true;
@@ -49,6 +51,12 @@ namespace Raketti.Server
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
+
+			app.Use(async (context, next) =>
+			{
+				context.Response.Headers.Add("X-Frame-Options", "DENY");
+				await next();
+			});
 
 			app.UseHttpsRedirection();
 			app.UseBlazorFrameworkFiles();
