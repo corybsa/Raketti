@@ -25,7 +25,7 @@ namespace Raketti.Client
 			// Services
 			builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 			builder.Services.AddScoped<IUserService, UserService>();
-			builder.Services.AddOptions();
+			builder.Services.AddScoped<IAuthService, AuthService>();
 
 			await builder.Build().RunAsync();
 		}

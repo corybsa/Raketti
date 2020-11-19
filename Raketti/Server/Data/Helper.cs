@@ -11,9 +11,9 @@ namespace Raketti.Server
 {
 	public class Helper
 	{
-		private readonly SqlConnectionConfiguration _sql;
+		private readonly SqlConfiguration _sql;
 
-		public Helper(SqlConnectionConfiguration sql)
+		public Helper(SqlConfiguration sql)
 		{
 			_sql = sql;
 		}

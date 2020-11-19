@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Raketti.Server.Data
 {
-	public class SqlConnectionConfiguration
+	public class SqlConfiguration
 	{
 		public string Value { get; }
-		public SqlConnectionConfiguration(string value) => Value = value;
+		public SqlConfiguration(string value) => Value = value;
 	}
 }

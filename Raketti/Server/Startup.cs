@@ -23,7 +23,7 @@ namespace Raketti.Server
 		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddSingleton(new SqlConnectionConfiguration(Configuration.GetConnectionString("MSSQL")));
+			services.AddSingleton(new SqlConfiguration(Configuration.GetConnectionString("MSSQL")));
 			services.AddControllersWithViews();
 			services.AddRazorPages();
 		}

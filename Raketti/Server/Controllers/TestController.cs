@@ -16,17 +16,17 @@ namespace Raketti.Server.Controllers
 	[ApiController]
 	public class TestController : ControllerBase
 	{
-		private readonly Helper helper;
+		private readonly Helper _helper;
 
-		public TestController(SqlConnectionConfiguration sql)
+		public TestController(SqlConfiguration sql)
 		{
-			helper = new Helper(sql);
+			_helper = new Helper(sql);
 		}
 
 		[HttpGet("users")]
 		public async Task<IActionResult> GetUsers()
 		{
-			IEnumerable<User> users = await helper.ExecStoredProcedure<User>("sp_admin_users_getUsers");
+			IEnumerable<User> users = await _helper.ExecStoredProcedure<User>("sp_admin_users_getUsers");
 
 			return Ok(users);
 		}
@@ -36,7 +36,7 @@ namespace Raketti.Server.Controllers
 		{
 			var parameters = new DynamicParameters();
 			parameters.Add("UserId", 3);
-			var users = await helper.ExecStoredProcedure<User>("sp_admin_users_getUser", parameters);
+			var users = await _helper.ExecStoredProcedure<User>("sp_admin_users_getUser", parameters);
 
 			return Ok(users);
 		}

@@ -1,14 +1,26 @@
 ﻿@page "/"
+@using Raketti.Shared
+@inject Raketti.Client.Services.IAuthService AuthService
 @inject IToastService ToastService
 
 <h1 @onclick="test">Hello, world!</h1>
 
 Welcome to your new app.
 
+<button @onclick="Login">Login</button>
+
 <SurveyPrompt Title="How is Blazor working for you?" />
 
 @code {
-	public void test() {
+	public void test()
+	{
 		ToastService.ShowSuccess("angel sucks", ":)");
+	}
+
+	public void Login()
+	{
+		var auth = new AuthInfo { Username = "LCSD\\corybsa", Password = "" };
+		var result = AuthService.Login(auth);
+		Console.WriteLine(result);
 	}
 }
