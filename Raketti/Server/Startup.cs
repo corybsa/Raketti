@@ -1,14 +1,12 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Linq;
 using Raketti.Server.Data;
 using System;
-using Microsoft.Net.Http.Headers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.CookiePolicy;
 
 namespace Raketti.Server
 {
@@ -28,13 +26,6 @@ namespace Raketti.Server
 			services.AddSingleton(new SqlConfiguration(Configuration.GetConnectionString("MSSQL")));
 			services.AddControllersWithViews();
 			services.AddRazorPages();
-			services.AddOptions();
-			services.AddHsts(options =>
-			{
-				options.Preload = true;
-				options.IncludeSubDomains = true;
-				options.MaxAge = TimeSpan.FromDays(30);
-			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,20 +39,31 @@ namespace Raketti.Server
 			else
 			{
 				app.UseExceptionHandler("/Error");
-				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-				app.UseHsts();
 			}
 
 			app.Use(async (context, next) =>
 			{
+				double hstsExpire = TimeSpan.FromDays(30).TotalSeconds;
 				context.Response.Headers.Add("X-Frame-Options", "DENY");
+				context.Response.Headers.Add("Content-Security-Policy", "" +
+				"default-src 'self';" +
+				"img-src data: https:;" +
+				"object-src 'none';" +
+				"script-src 'self' 'sha256-9mThMC8NT3dPbcxJOtXiiwevtWTAPorqkXGKqI388cI=' 'sha256-v8v3RKRPmN4odZ1CWM5gw80QKPCCWMcpNeOmimNL2AA=' 'sha256-Nf/DChZ0c94B4rwuAMUxo8txJpPuJsZdlwmpQgdolC0=' 'unsafe-eval';" +
+				"style-src 'self' 'unsafe-inline';" +
+				"upgrade-insecure-requests;");
+				context.Response.Headers.Add("Strict-Transport-Security", $"max-age={hstsExpire};includeSubDomains;preload");
 				await next();
 			});
 
 			app.UseHttpsRedirection();
 			app.UseBlazorFrameworkFiles();
 			app.UseStaticFiles();
-
+			app.UseCookiePolicy(new CookiePolicyOptions {
+				HttpOnly = HttpOnlyPolicy.Always,
+				Secure = CookieSecurePolicy.Always,
+				MinimumSameSitePolicy = SameSiteMode.Strict
+			});
 			app.UseRouting();
 
 			app.UseEndpoints(endpoints =>
