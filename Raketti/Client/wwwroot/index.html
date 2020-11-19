@@ -11,6 +11,7 @@
                script-src 'self'
                           'sha256-9mThMC8NT3dPbcxJOtXiiwevtWTAPorqkXGKqI388cI='
                           'sha256-v8v3RKRPmN4odZ1CWM5gw80QKPCCWMcpNeOmimNL2AA='
+                          'sha256-Nf/DChZ0c94B4rwuAMUxo8txJpPuJsZdlwmpQgdolC0='
                           'unsafe-eval';
                style-src 'self'
                          'unsafe-inline';
@@ -24,6 +25,20 @@
     <link href="css/app.css" rel="stylesheet" />
     <link href="manifest.json" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
+
+    <style>
+        html {
+            display: none;
+        }
+    </style>
+    <script>
+        if (self === top) {
+            document.documentElement.style.display = 'block';
+        }
+        else {
+            top.location = self.location;
+        }
+    </script>
 </head>
 
 <body>
