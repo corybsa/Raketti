@@ -1,4 +1,5 @@
 ﻿@page "/"
+@attribute [Authorize]
 @inject IToastService ToastService
 
 <h1 @onclick="test">Hello, world!</h1>
@@ -31,6 +32,6 @@ Welcome to your new app.
 	public void test()
 	{
 		ToastService.ShowSuccess("angel sucks", ":)");
-		
+
 	}
 }

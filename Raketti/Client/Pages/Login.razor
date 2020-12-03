@@ -3,27 +3,41 @@
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthStateProvider
 @inject Raketti.Client.Services.IAuthService AuthService
+@inject Raketti.Client.Services.BrowserService BrowserService
 @inject IToastService ToastService
 @inject NavigationManager NavigationManager
 
-<EditForm Model="@user" OnValidSubmit="HandleLogin">
-	<DataAnnotationsValidator />
-	<div class="form-group">
-		<label for="username">Username</label>
-		<InputText id="username" @bind-Value="user.Username" class="form-control" />
-		<ValidationMessage For="@(() => user.Username)" />
+<div class="main" style="background-image: url('images/color_pencils_vertical.jpg'); background-size: 100%;">
+	<div class="container-fluid">
+		<div class="row align-items-center justify-content-center" style="height: @windowHeight">
+			<div class="col-4">
+				<div class="card">
+					<div class="card-body">
+						<EditForm Model="@user" OnValidSubmit="HandleLogin">
+							<DataAnnotationsValidator />
+							<div class="form-group">
+								<label for="username">Username</label>
+								<InputText id="username" @bind-Value="user.Username" class="form-control" />
+								<ValidationMessage For="@(() => user.Username)" />
+							</div>
+							<div class="form-group">
+								<label for="password">Password</label>
+								<InputText id="password" @bind-Value="user.Password" type="password" class="form-control" />
+								<ValidationMessage For="@(() => user.Password)" />
+							</div>
+							<button type="submit" class="btn btn-primary">Login</button>
+							<ValidationSummary />
+						</EditForm>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div class="form-group">
-		<label for="password">Password</label>
-		<InputText id="password" @bind-Value="user.Password" type="password" class="form-control" />
-		<ValidationMessage For="@(() => user.Password)" />
-	</div>
-	<button type="submit" class="btn btn-primary">Login</button>
-	<ValidationSummary />
-</EditForm>
+</div>
 
 @code {
 	private AuthInfo user = new AuthInfo();
+	private string windowHeight;
 
 	public async void HandleLogin()
 	{
@@ -42,5 +56,11 @@
 		{
 			ToastService.ShowError(result.Message);
 		}
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		var dimensions = await BrowserService.GetDimensions();
+		windowHeight = $"{dimensions.Height}px";
 	}
 }
