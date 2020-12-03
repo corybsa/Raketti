@@ -8,6 +8,13 @@
 
 <p>This component demonstrates fetching data from the server.</p>
 
+<style>
+	#user-table tr:hover {
+		background: hsl(0, 0%, 87%);
+		cursor: pointer;
+	}
+</style>
+
 @if (users == null)
 {
 	<p><em>Loading...</em></p>
@@ -22,7 +29,7 @@ else
 				<th>Last name</th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody id="user-table">
 			@foreach (var user in users)
 			{
 				<tr @onclick="() => GetUser(user.UserId)">
@@ -44,9 +51,12 @@ else
 		{
 			var res = await UserService.GetUsers();
 
-			if(!res.Success) {
+			if (!res.Success)
+			{
 				ToastService.ShowError(res.Info, "Error");
-			} else {
+			}
+			else
+			{
 				users = res.Data;
 			}
 		}
@@ -54,11 +64,12 @@ else
 		{
 			ToastService.ShowError(e.Message, "Error");
 		}
-
 	}
 
-	private async void GetUser(int userId) {
-		try {
+	private async void GetUser(int userId)
+	{
+		try
+		{
 			var res = await UserService.GetUser(userId);
 
 			if (!res.Success)
@@ -67,9 +78,10 @@ else
 			}
 			else
 			{
-				Console.WriteLine(res.Data[0].ToString());
+				ToastService.ShowSuccess(res.Data[0].ToString());
 			}
-		} catch(Exception e)
+		}
+		catch (Exception e)
 		{
 			ToastService.ShowError(e.Message, "Error");
 		}
