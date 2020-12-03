@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-@using Blazored.Toast.Configuration
+@inject Raketti.Client.Services.IFlyoutService Flyout
 
 <BlazoredToasts />
 
@@ -18,10 +18,12 @@
 				@Body
 			</div>
 		</div>
+
+		@*<div class="@(Flyout.IsOpen ? "open" : "closed")">
+			<Flyout />
+		</div>*@
 	</Authorized>
-    <NotAuthorized>
+	<NotAuthorized>
 		@Body
-    </NotAuthorized>
+	</NotAuthorized>
 </AuthorizeView>
-
-

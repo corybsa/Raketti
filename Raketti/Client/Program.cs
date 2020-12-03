@@ -26,6 +26,7 @@ namespace Raketti.Client
 			builder.Services.AddScoped<IUserService, UserService>();
 			builder.Services.AddScoped<IAuthService, AuthService>();
 			builder.Services.AddScoped<BrowserService>();
+			builder.Services.AddSingleton<IFlyoutService, FlyoutService>();
 			builder.Services.AddOptions();
 			builder.Services.AddAuthorizationCore();
 			builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
