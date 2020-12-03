@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Raketti.Client.Services
@@ -12,12 +13,18 @@ namespace Raketti.Client.Services
 	{
 		private readonly HttpClient _http;
 
-		public UserService(HttpClient http) {
+		public UserService(HttpClient http)
+		{
 			_http = http;
 		}
 
-		public async Task<DbResponse<User>> GetUsers() {
+		public async Task<DbResponse<User>> GetUsers()
+		{
 			return await _http.GetFromJsonAsync<DbResponse<User>>("api/test/users");
+		}
+
+		public async Task<DbResponse<User>> GetUser(int userId) {
+			return await _http.GetFromJsonAsync<DbResponse<User>>($"api/test/user/{userId}");
 		}
 	}
 }

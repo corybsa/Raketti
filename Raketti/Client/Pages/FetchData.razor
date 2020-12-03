@@ -25,7 +25,7 @@ else
 		<tbody>
 			@foreach (var user in users)
 			{
-				<tr>
+				<tr @onclick="() => GetUser(user.UserId)">
 					<td>@user.UserId</td>
 					<td>@user.FirstName</td>
 					<td>@user.LastName</td>
@@ -57,4 +57,21 @@ else
 
 	}
 
+	private async void GetUser(int userId) {
+		try {
+			var res = await UserService.GetUser(userId);
+
+			if (!res.Success)
+			{
+				ToastService.ShowError(res.Info, "Error");
+			}
+			else
+			{
+				Console.WriteLine(res.Data[0].ToString());
+			}
+		} catch(Exception e)
+		{
+			ToastService.ShowError(e.Message, "Error");
+		}
+	}
 }

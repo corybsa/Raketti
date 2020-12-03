@@ -36,15 +36,15 @@ namespace Raketti.Server.Controllers
 			return Ok(response);
 		}
 
-		[HttpGet("user")]
-		public async Task<IActionResult> GetUser()
+		[HttpGet("user/{userId}")]
+		public async Task<IActionResult> GetUser(int userId)
 		{
 			var parameters = new DynamicParameters();
 			parameters.Add("StatementType", 1);
-			parameters.Add("UserId", 23457);
-			var users = await _helper.ExecStoredProcedure<User>("sp_Users", parameters);
+			parameters.Add("UserId", userId);
+			var response = await _helper.ExecStoredProcedure<User>("sp_Users", parameters);
 
-			return Ok(users);
+			return Ok(response);
 		}
 	}
 }

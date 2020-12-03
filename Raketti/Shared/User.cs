@@ -16,5 +16,10 @@ namespace Raketti.Shared
 		public string Email { get; set; }
 		public string Title{ get; set; }
 		public bool IsActive { get; set; }
+
+		public override string ToString()
+		{
+			return $"{FirstName} {LastName} ({UserId})";
+		}
 	}
 }
