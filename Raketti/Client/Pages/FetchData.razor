@@ -2,6 +2,7 @@
 @attribute [Authorize]
 @using Raketti.Shared
 @inject Raketti.Client.Services.IUserService UserService
+@inject IToastService ToastService
 
 <h1>Weather forecast</h1>
 
@@ -35,11 +36,25 @@ else
 }
 
 @code {
-	IEnumerable<User> users;
+	List<User> users;
 
 	protected override async Task OnInitializedAsync()
 	{
-		users = await UserService.GetUsers();
+		try
+		{
+			var res = await UserService.GetUsers();
+
+			if(!res.Success) {
+				ToastService.ShowError(res.Info, "Error");
+			} else {
+				users = res.Data;
+			}
+		}
+		catch (Exception e)
+		{
+			ToastService.ShowError(e.Message, "Error");
+		}
+
 	}
 
 }

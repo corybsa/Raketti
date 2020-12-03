@@ -16,8 +16,8 @@ namespace Raketti.Client.Services
 			_http = http;
 		}
 
-		public async Task<List<User>> GetUsers() {
-			return await _http.GetFromJsonAsync<List<User>>("api/test/users");
+		public async Task<DbResponse<User>> GetUsers() {
+			return await _http.GetFromJsonAsync<DbResponse<User>>("api/test/users");
 		}
 	}
 }

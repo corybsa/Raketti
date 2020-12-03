@@ -6,6 +6,7 @@ using Microsoft.Data.SqlClient;
 using System.Linq;
 using Dapper;
 using Raketti.Server.Data;
+using Raketti.Shared;
 using System.Text;
 
 namespace Raketti.Server
@@ -19,9 +20,9 @@ namespace Raketti.Server
 			_sql = sql;
 		}
 
-		public async Task<List<T>> ExecStoredProcedure<T>(string proc, DynamicParameters parameters = null)
+		public async Task<DbResponse<T>> ExecStoredProcedure<T>(string proc, DynamicParameters parameters = null)
 		{
-			List<T> results = new List<T>();
+			var response = new DbResponse<T>();
 
 			using (var conn = new SqlConnection(_sql.Value))
 			{
@@ -32,30 +33,20 @@ namespace Raketti.Server
 
 				try
 				{
-					results = (await conn.QueryAsync<T>(proc, parameters, commandType: CommandType.StoredProcedure)).ToList();
+					response.Success = true;
+					response.Data = (await conn.QueryAsync<T>(proc, parameters, commandType: CommandType.StoredProcedure)).ToList();
 				}
 				catch (SqlException e)
 				{
-					var sb = new StringBuilder();
-					sb.AppendLine(e.Message);
-					sb.Append($"EXEC {proc}");
-
-					if (parameters != null)
-					{
-						foreach (var name in parameters.ParameterNames)
-						{
-							sb.Append(" '").Append(parameters.Get<string>(name)).Append("'");
-						}
-					}
-
-					Console.WriteLine(sb.ToString());
-
-					throw e;
+					string info = GetStatement(proc, parameters, e);
+					response.Success = false;
+					response.Info = info;
+					Console.WriteLine(info);
 				}
 				catch (Exception e)
 				{
-					Console.WriteLine($"Unknown error: {e.Message}");
-					throw e;
+					response.Success = false;
+					response.Info = $"Unknown error: {e.Message}";
 				}
 				finally
 				{
@@ -66,7 +57,28 @@ namespace Raketti.Server
 				}
 			}
 
-			return results;
+			return response;
+		}
+
+		private string GetStatement(string proc, DynamicParameters parameters, SqlException e) {
+			var sb = new StringBuilder();
+
+			if (e != null)
+			{
+				sb.AppendLine(e.Message);
+			}
+
+			sb.Append($"EXEC {proc}");
+
+			if (parameters != null)
+			{
+				foreach (var name in parameters.ParameterNames)
+				{
+					sb.Append(" '").Append(parameters.Get<dynamic>(name)).Append("'");
+				}
+			}
+
+			return sb.ToString();
 		}
 	}
 }

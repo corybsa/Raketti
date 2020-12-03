@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using Dapper;
 using Raketti.Server.Data;
 using Raketti.Shared;
@@ -26,25 +21,28 @@ namespace Raketti.Server.Controllers
 		[HttpGet("users")]
 		public async Task<IActionResult> GetUsers()
 		{
-			IEnumerable<User> users;
+			DbResponse<User> response;
 			try
 			{
-				users = await _helper.ExecStoredProcedure<User>("sp_admin_users_getUsers");
+				var parameters = new DynamicParameters();
+				parameters.Add("StatementType", 1);
+				response = await _helper.ExecStoredProcedure<User>("sp_Users", parameters);
 			}
 			catch (Exception e)
 			{
 				return BadRequest(e.Message);
 			}
 
-			return Ok(users);
+			return Ok(response);
 		}
 
 		[HttpGet("user")]
 		public async Task<IActionResult> GetUser()
 		{
 			var parameters = new DynamicParameters();
-			parameters.Add("UserId", 3);
-			var users = await _helper.ExecStoredProcedure<User>("sp_admin_users_getUser", parameters);
+			parameters.Add("StatementType", 1);
+			parameters.Add("UserId", 23457);
+			var users = await _helper.ExecStoredProcedure<User>("sp_Users", parameters);
 
 			return Ok(users);
 		}

@@ -73,7 +73,7 @@ namespace Raketti.Server.Controllers
 
 				try
 				{
-					var user = (await _helper.ExecStoredProcedure<User>("GetUser", parameters)).First();
+					var user = (await _helper.ExecStoredProcedure<User>("GetUser", parameters)).Data.First();
 					response.Data = CreateToken(user);
 				}
 				catch (Exception e)
