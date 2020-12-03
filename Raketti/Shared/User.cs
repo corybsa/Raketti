@@ -9,25 +9,12 @@ namespace Raketti.Shared
 	public class User
 	{
 		public int UserId { get; set; }
-		public string EmployeeId { get; set; }
-		public string UserName { get; set; }
-		public string NormalizedUserName { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
-		public string DisplayName { get; set; }
+		public string Username { get; set; }
+		public int RoleId { get; set; }
 		public string Email { get; set; }
-		public string NormalizedEmail { get; set; }
-		public string PasswordHash { get; set; }
-		public string PhoneNumber { get; set; }
-		public string LocationCode { get; set; }
-		public string Provider { get; set; }
-		public DateTime LastSeen { get; set; }
-		public string DisabledQueues { get; set; }
-		public DateTime CreatedTimeStamp { get; set; }
-		public int CreatedUserId { get; set; }
-		public DateTime ModifiedTimeStamp { get; set; }
-		public int ModifiedUserId { get; set; }
-		public DateTime ArchivedTimeStamp { get; set; }
-		public int ArchivedUserId { get; set; }
+		public string Title{ get; set; }
+		public bool IsActive { get; set; }
 	}
 }

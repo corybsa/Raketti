@@ -26,7 +26,15 @@ namespace Raketti.Server.Controllers
 		[HttpGet("users")]
 		public async Task<IActionResult> GetUsers()
 		{
-			IEnumerable<User> users = await _helper.ExecStoredProcedure<User>("sp_admin_users_getUsers");
+			IEnumerable<User> users;
+			try
+			{
+				users = await _helper.ExecStoredProcedure<User>("sp_admin_users_getUsers");
+			}
+			catch (Exception e)
+			{
+				return BadRequest(e.Message);
+			}
 
 			return Ok(users);
 		}
