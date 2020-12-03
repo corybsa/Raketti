@@ -11,6 +11,20 @@
     <link href="css/app.css" rel="stylesheet" />
     <link href="manifest.json" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
+
+    <style>
+        html {
+            display: none;
+        }
+    </style>
+    <script>
+        if (self === top) {
+            document.documentElement.style.display = 'block';
+        }
+        else {
+            top.location = self.location;
+        }
+    </script>
 </head>
 
 <body>

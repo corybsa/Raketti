@@ -17,16 +17,11 @@ namespace Raketti.Client.Services
 			_http = http;
 		}
 
-		public async Task<object> Login(AuthInfo auth)
+		public async Task<AuthResponse<string>> Login(AuthInfo auth)
 		{
 			var result = await _http.PostAsJsonAsync("api/auth", auth);
 
-			if (result.IsSuccessStatusCode)
-			{
-				return await result.Content.ReadFromJsonAsync<object>();
-			}
-
-			return null;
+			return await result.Content.ReadFromJsonAsync<AuthResponse<string>>();
 		}
 	}
 }

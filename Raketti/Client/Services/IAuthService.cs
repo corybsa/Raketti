@@ -8,6 +8,6 @@ namespace Raketti.Client.Services
 {
 	public interface IAuthService
 	{
-		Task<object> Login(AuthInfo auth);
+		Task<AuthResponse<string>> Login(AuthInfo auth);
 	}
 }
