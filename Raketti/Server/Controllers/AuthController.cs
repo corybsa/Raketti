@@ -35,7 +35,8 @@ namespace Raketti.Server.Controllers
 		{
 			var response = new AuthResponse<string>();
 
-			if(auth.Username == String.Empty) {
+			if (auth.Username == String.Empty)
+			{
 				response.Success = false;
 				response.Message = "Username cannot be empty.";
 				return BadRequest(response);
@@ -95,8 +96,7 @@ namespace Raketti.Server.Controllers
 				new Claim(ClaimTypes.Name, user.Username)
 			};
 
-			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-				_configuration.GetSection("AppSettings:Token").Value));
+			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
 
 			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 

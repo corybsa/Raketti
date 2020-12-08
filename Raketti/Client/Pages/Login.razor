@@ -44,10 +44,10 @@
 		var result = await AuthService.Login(user);
 
 		// hopefully clear password from memory
-		user.Password = null;
 
 		if (result.Success)
 		{
+			user.Password = null;
 			await LocalStorage.SetItemAsync<string>("authToken", result.Data);
 			await AuthStateProvider.GetAuthenticationStateAsync();
 			NavigationManager.NavigateTo("");

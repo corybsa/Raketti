@@ -2,6 +2,7 @@
 @attribute [Authorize]
 @using Raketti.Shared
 @inject Raketti.Client.Services.IUserService UserService
+@inject AuthenticationStateProvider AuthStateProvider
 @inject IToastService ToastService
 
 <h1>Weather forecast</h1>
@@ -47,6 +48,8 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
+		await AuthStateProvider.GetAuthenticationStateAsync();
+
 		try
 		{
 			var res = await UserService.GetUsers();
