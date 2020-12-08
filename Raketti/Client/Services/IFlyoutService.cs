@@ -9,6 +9,7 @@ namespace Raketti.Client.Services
 	public interface IFlyoutService
 	{
 		public bool IsOpen { get; set; }
+		public event Action OnChange;
 		public void Open();
 		public void Close();
 	}

@@ -1,5 +1,52 @@
 ﻿@inherits LayoutComponentBase
+@implements IDisposable
 @inject Raketti.Client.Services.IFlyoutService Flyout
+@inject Raketti.Client.Services.BrowserService BrowserService
+@inject Microsoft.JSInterop.IJSRuntime js
+
+<style>
+	#flyout {
+		position: fixed;
+		height: @windowHeight;
+		width: 100%;
+		right: -100%;
+		background: red;
+		display: block;
+		transition: 0.3s linear;
+	}
+
+	#flyout.open {
+		right: 0;
+	}
+
+	#flyout.closed {
+		right: -100%;
+	}
+
+	@@media screen and (min-width: 1px) {
+		#flyout.open {
+			width: 100%;
+		}
+	}
+
+	@@media screen and (min-width: 592px) {
+		#flyout.open {
+			width: 70%;
+		}
+	}
+
+	@@media screen and (min-width: 769px) {
+		#flyout.open {
+			width: 50%;
+		}
+	}
+
+	@@media screen and (min-width: 992px) {
+		#flyout.open {
+			width: 45%;
+		}
+	}
+</style>
 
 <BlazoredToasts />
 
@@ -19,11 +66,42 @@
 			</div>
 		</div>
 
-		@*<div class="@(Flyout.IsOpen ? "open" : "closed")">
+		<div id="flyout" class="@(Flyout.IsOpen ? "open" : "closed")">
 			<Flyout />
-		</div>*@
+		</div>
 	</Authorized>
 	<NotAuthorized>
 		@Body
 	</NotAuthorized>
 </AuthorizeView>
+
+@code {
+	private string windowHeight;
+
+	protected override async Task OnInitializedAsync()
+	{
+		Flyout.OnChange += StateHasChanged;
+
+		// listen for browser resize
+		Raketti.Client.Services.BrowserService.OnResize += BrowserHasResized;
+		await js.InvokeAsync<object>("raketti.registerResizeCallback");
+
+		var height = await BrowserService.GetHeight();
+		windowHeight = $"{height}px";
+	}
+
+	private async Task BrowserHasResized()
+	{
+		int height = await BrowserService.GetHeight();
+		windowHeight = $"{height}px";
+
+		// let blazor know that the state changed
+		StateHasChanged();
+	}
+
+	public void Dispose()
+	{
+		// stop listening for browser resize
+		Raketti.Client.Services.BrowserService.OnResize -= BrowserHasResized;
+	}
+}

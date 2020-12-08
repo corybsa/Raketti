@@ -6,6 +6,7 @@
 @inject Raketti.Client.Services.BrowserService BrowserService
 @inject IToastService ToastService
 @inject NavigationManager NavigationManager
+@inject Microsoft.JSInterop.IJSRuntime js
 
 <div class="main" style="background-image: url('images/color_pencils_vertical.jpg'); background-size: 100%;">
 	<div class="container-fluid">
@@ -26,7 +27,6 @@
 								<ValidationMessage For="@(() => user.Password)" />
 							</div>
 							<button type="submit" class="btn btn-primary">Login</button>
-							<ValidationSummary />
 						</EditForm>
 					</div>
 				</div>
@@ -43,7 +43,7 @@
 	{
 		var result = await AuthService.Login(user);
 
-		// clear password from memory
+		// hopefully clear password from memory
 		user.Password = null;
 
 		if (result.Success)
@@ -60,7 +60,20 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		var dimensions = await BrowserService.GetDimensions();
-		windowHeight = $"{dimensions.Height}px";
+		// listen for browser resize
+		Raketti.Client.Services.BrowserService.OnResize += BrowserHasResized;
+		await js.InvokeAsync<object>("raketti.registerResizeCallback");
+
+		var height = await BrowserService.GetHeight();
+		windowHeight = $"{height}px";
+	}
+
+	private async Task BrowserHasResized()
+	{
+		int height = await BrowserService.GetHeight();
+		windowHeight = $"{height}px";
+
+		// let blazor know that the state changed
+		StateHasChanged();
 	}
 }
