@@ -4,11 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Dapper;
 using Raketti.Server.Data;
 using Raketti.Shared;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Raketti.Server.Controllers
 {
-	[Authorize]
+	[Auth]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class TestController : ControllerBase

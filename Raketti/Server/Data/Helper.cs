@@ -35,6 +35,7 @@ namespace Raketti.Server
 				{
 					response.Success = true;
 					response.Data = (await conn.QueryAsync<T>(proc, parameters, commandType: CommandType.StoredProcedure)).ToList();
+					Console.WriteLine(GetStatement(proc, parameters, null));
 				}
 				catch (SqlException e)
 				{

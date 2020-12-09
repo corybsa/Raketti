@@ -12,6 +12,7 @@ namespace Raketti.Client.Services
 	public class UserService : IUserService
 	{
 		private readonly HttpClient _http;
+		public static User user { get; set; }
 
 		public UserService(HttpClient http)
 		{

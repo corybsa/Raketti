@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -9,7 +8,6 @@ using System.Threading.Tasks;
 using Dapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -21,19 +19,17 @@ namespace Raketti.Server.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	[Authorize]
 	public class AuthController : ControllerBase
 	{
 		private readonly Helper _helper;
 		private readonly IConfiguration _configuration;
 
-		public AuthController(SqlConfiguration sql, IConfiguration configuration, IServiceProvider serviceProvider)
+		public AuthController(SqlConfiguration sql, IConfiguration configuration)
 		{
 			_helper = new Helper(sql);
 			_configuration = configuration;
 		}
 
-		[AllowAnonymous]
 		[HttpPost]
 		public async Task<IActionResult> Login(AuthInfo auth)
 		{
@@ -80,6 +76,7 @@ namespace Raketti.Server.Controllers
 				{
 					var user = (await _helper.ExecStoredProcedure<User>("GetUser", parameters)).Data.First();
 					response.Data = CreateToken(user);
+					Client.Services.UserService.user = user;
 				}
 				catch (Exception e)
 				{
