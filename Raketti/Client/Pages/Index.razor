@@ -24,11 +24,6 @@ Welcome to your new app.
 </div>
 
 @code {
-	protected override async Task OnInitializedAsync()
-	{
-		await AuthStateProvider.GetAuthenticationStateAsync();
-	}
-
 	public void open()
 	{
 		Flyout.Open();

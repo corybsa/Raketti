@@ -7,7 +7,9 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -19,30 +21,32 @@ namespace Raketti.Server.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
 	public class AuthController : ControllerBase
 	{
 		private readonly Helper _helper;
 		private readonly IConfiguration _configuration;
 
-		public AuthController(SqlConfiguration sql, IConfiguration configuration)
+		public AuthController(SqlConfiguration sql, IConfiguration configuration, IServiceProvider serviceProvider)
 		{
 			_helper = new Helper(sql);
 			_configuration = configuration;
 		}
 
+		[AllowAnonymous]
 		[HttpPost]
 		public async Task<IActionResult> Login(AuthInfo auth)
 		{
 			var response = new AuthResponse<string>();
 
-			if (auth.Username == String.Empty)
+			if (auth.Username == string.Empty)
 			{
 				response.Success = false;
 				response.Message = "Username cannot be empty.";
 				return BadRequest(response);
 			}
 
-			if (auth.Password == String.Empty)
+			if (auth.Password == string.Empty)
 			{
 				response.Success = false;
 				response.Message = "Password cannot be empty.";
