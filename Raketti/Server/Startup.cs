@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Raketti.Shared;
 
 namespace Raketti.Server
 {
@@ -35,10 +38,26 @@ namespace Raketti.Server
 				{
 					options.TokenValidationParameters = new TokenValidationParameters
 					{
+						ClockSkew = TimeSpan.Zero,
 						ValidateIssuerSigningKey = true,
 						IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
 						ValidateIssuer = false,
-						ValidateAudience = false
+						ValidateAudience = false,
+						ValidateLifetime = true
+					};
+
+					// check jwt expiration
+					options.Events = new JwtBearerEvents
+					{
+						OnAuthenticationFailed = context =>
+						{
+							if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+							{
+								context.Response.Headers.Add("Token-Expired", "true");
+							}
+
+							return Task.CompletedTask;
+						}
 					};
 				});
 		}
@@ -74,7 +93,8 @@ namespace Raketti.Server
 			app.UseHttpsRedirection();
 			app.UseBlazorFrameworkFiles();
 			app.UseStaticFiles();
-			app.UseCookiePolicy(new CookiePolicyOptions {
+			app.UseCookiePolicy(new CookiePolicyOptions
+			{
 				HttpOnly = HttpOnlyPolicy.Always,
 				Secure = CookieSecurePolicy.Always,
 				MinimumSameSitePolicy = SameSiteMode.Strict

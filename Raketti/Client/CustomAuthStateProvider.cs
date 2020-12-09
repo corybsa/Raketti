@@ -36,7 +36,7 @@ namespace Raketti.Client
 					identity = new ClaimsIdentity(ParseClaimsFromJwt(authToken), "jwt");
 					_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
 
-					foreach (var c in identity.Claims)
+					/*foreach (var c in identity.Claims)
 					{
 						if (c.Type.Equals("exp"))
 						{
@@ -47,11 +47,10 @@ namespace Raketti.Client
 								throw new Exception("Token expired");
 							}
 						}
-					}
+					}*/
 				}
-				catch (Exception e)
+				catch (Exception)
 				{
-					Console.WriteLine(e.ToString());
 					await _localStorageService.RemoveItemAsync("authToken");
 					identity = new ClaimsIdentity();
 				}

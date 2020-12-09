@@ -48,8 +48,6 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		await AuthStateProvider.GetAuthenticationStateAsync();
-
 		try
 		{
 			var res = await UserService.GetUsers();
