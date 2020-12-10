@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Raketti.Shared;
-using System;
 
 namespace Raketti.Server.Data
 {
@@ -27,7 +26,7 @@ namespace Raketti.Server.Data
 
 			var user = Client.Services.UserService.user;
 
-			// wait for user data 
+			// wait for user data
 			while(user == null) {
 				user = Client.Services.UserService.user;
 			}
