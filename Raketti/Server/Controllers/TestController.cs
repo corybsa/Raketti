@@ -19,6 +19,7 @@ namespace Raketti.Server.Controllers
 			_helper = new Helper(sql);
 		}
 
+		[Auth(Roles = new[] { SystemRole.GlobalAdmin })]
 		[HttpGet("users")]
 		public async Task<IActionResult> GetUsers()
 		{

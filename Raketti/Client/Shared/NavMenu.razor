@@ -47,6 +47,7 @@
 	private async void Logout()
 	{
 		await LocalStorage.RemoveItemAsync("authToken");
+		await LocalStorage.RemoveItemAsync("userId");
 		await AuthStateProvider.GetAuthenticationStateAsync();
 	}
 }

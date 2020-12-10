@@ -6,7 +6,7 @@ using System;
 
 namespace Raketti.Server.Data
 {
-	public class Auth : AuthorizeAttribute, IAuthorizationFilter
+	public class AuthAttribute : AuthorizeAttribute, IAuthorizationFilter
 	{
 		public new int[] Roles { get; set; }
 
@@ -26,6 +26,11 @@ namespace Raketti.Server.Data
 			}
 
 			var user = Client.Services.UserService.user;
+
+			// wait for user data 
+			while(user == null) {
+				user = Client.Services.UserService.user;
+			}
 
 			// Global admin can access everything
 			if (user.RoleId == SystemRole.GlobalAdmin)

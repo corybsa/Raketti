@@ -9,5 +9,6 @@ namespace Raketti.Client.Services
 	public interface IAuthService
 	{
 		Task<AuthResponse<string>> Login(AuthInfo auth);
+		Task<DbResponse<User>> Check(int userId);
 	}
 }

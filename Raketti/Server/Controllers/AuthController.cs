@@ -70,12 +70,14 @@ namespace Raketti.Server.Controllers
 				}
 
 				var parameters = new DynamicParameters();
+				parameters.Add("StatementType", 1);
 				parameters.Add("Username", auth.Username);
 
 				try
 				{
-					var user = (await _helper.ExecStoredProcedure<User>("GetUser", parameters)).Data.First();
-					response.Data = CreateToken(user);
+					var user = (await _helper.ExecStoredProcedure<User>("sp_Users", parameters)).Data.First();
+					response.Data = user.UserId.ToString();
+					response.Message = CreateToken(user);
 					Client.Services.UserService.user = user;
 				}
 				catch (Exception e)
@@ -87,6 +89,31 @@ namespace Raketti.Server.Controllers
 
 				return Ok(response);
 			}
+		}
+
+		[HttpPost("check")]
+		public async Task<IActionResult> Check([FromBody] int userId)
+		{
+			var response = new DbResponse<User>();
+
+			try
+			{
+				var parameters = new DynamicParameters();
+				parameters.Add("StatementType", 1);
+				parameters.Add("UserID", userId);
+				var user = (await _helper.ExecStoredProcedure<User>("sp_Users", parameters)).Data;
+				response.Success = true;
+				response.Data = user;
+				Client.Services.UserService.user = user.First();
+			}
+			catch (Exception e)
+			{
+				response.Success = false;
+				response.Info = e.Message;
+				return StatusCode(StatusCodes.Status500InternalServerError, response);
+			}
+
+			return Ok(response);
 		}
 
 		private string CreateToken(User user)

@@ -1,4 +1,6 @@
-@attribute [Authorize]
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@inject Raketti.Client.Services.IAuthService AuthService
+@inject IToastService ToastService
 
 <CascadingAuthenticationState>
 	<Router AppAssembly="@typeof(Program).Assembly">
@@ -16,3 +18,26 @@
 		</NotFound>
 	</Router>
 </CascadingAuthenticationState>
+
+@code {
+	protected override async Task OnInitializedAsync()
+	{
+		if (await LocalStorage.ContainKeyAsync("userId"))
+		{
+			try
+			{
+				var userId = await LocalStorage.GetItemAsync<int>("userId");
+				var res = await AuthService.Check(userId);
+
+				if (!res.Success)
+				{
+					ToastService.ShowError(res.Info, "Error");
+				}
+			}
+			catch (Exception e)
+			{
+				ToastService.ShowError(e.Message, "Error");
+			}
+		}
+	}
+}

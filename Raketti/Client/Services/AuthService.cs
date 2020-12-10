@@ -20,8 +20,13 @@ namespace Raketti.Client.Services
 		public async Task<AuthResponse<string>> Login(AuthInfo auth)
 		{
 			var result = await _http.PostAsJsonAsync("api/auth", auth);
-
 			return await result.Content.ReadFromJsonAsync<AuthResponse<string>>();
+		}
+
+		public async Task<DbResponse<User>> Check(int userId)
+		{
+			var result = await _http.PostAsJsonAsync("api/auth/check", userId);
+			return await result.Content.ReadFromJsonAsync<DbResponse<User>>();
 		}
 	}
 }

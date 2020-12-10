@@ -48,7 +48,8 @@
 		if (result.Success)
 		{
 			user.Password = null;
-			await LocalStorage.SetItemAsync<string>("authToken", result.Data);
+			await LocalStorage.SetItemAsync<string>("userId", result.Data);
+			await LocalStorage.SetItemAsync<string>("authToken", result.Message);
 			await AuthStateProvider.GetAuthenticationStateAsync();
 			NavigationManager.NavigateTo("");
 		}
