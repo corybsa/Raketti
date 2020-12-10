@@ -20,6 +20,7 @@ namespace Raketti.Client
 			// 3rd party packages
 			builder.Services.AddBlazoredToast();
 			builder.Services.AddBlazoredLocalStorage();
+			builder.Services.AddTelerikBlazor();
 
 			// Services
 			builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });

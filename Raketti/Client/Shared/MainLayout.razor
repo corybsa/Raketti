@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@layout TelerikLayout
+@inherits LayoutComponentBase
 @implements IDisposable
 @inject Raketti.Client.Services.IFlyoutService Flyout
 @inject Raketti.Client.Services.BrowserService BrowserService
@@ -8,13 +9,15 @@
 
 <style>
 	#flyout {
+		background: white;
 		position: fixed;
 		height: @windowHeight;
 		width: 100%;
 		right: -100%;
-		background: red;
 		display: block;
 		transition: 0.3s linear;
+		z-index: 99999;
+		box-shadow: black 0px 0px 5px;
 	}
 
 	#flyout.open {

@@ -81,6 +81,7 @@ namespace Raketti.Server
 				context.Response.Headers.Add("X-Frame-Options", "DENY");
 				context.Response.Headers.Add("Content-Security-Policy", "" +
 				"default-src 'self';" +
+				"font-src 'self' data:;" +
 				"img-src 'self' data: https:;" +
 				"object-src 'none';" +
 				"script-src 'self' 'sha256-9mThMC8NT3dPbcxJOtXiiwevtWTAPorqkXGKqI388cI=' 'sha256-v8v3RKRPmN4odZ1CWM5gw80QKPCCWMcpNeOmimNL2AA=' 'sha256-Nf/DChZ0c94B4rwuAMUxo8txJpPuJsZdlwmpQgdolC0=' 'unsafe-eval';" +

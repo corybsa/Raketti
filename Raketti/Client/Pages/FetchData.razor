@@ -4,6 +4,7 @@
 @inject Raketti.Client.Services.IUserService UserService
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IToastService ToastService
+@inject Raketti.Client.Services.IFlyoutService Flyout
 
 <h1>Weather forecast</h1>
 
@@ -22,25 +23,21 @@
 }
 else
 {
-	<table class="table">
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>First name</th>
-				<th>Last name</th>
-			</tr>
-		</thead>
-		<tbody id="user-table">
-			@foreach (var user in users)
-			{
-				<tr @onclick="() => GetUser(user.UserId)">
-					<td>@user.UserId</td>
-					<td>@user.FirstName</td>
-					<td>@user.LastName</td>
-				</tr>
-			}
-		</tbody>
-	</table>
+	<TelerikGrid Data="users"
+				 Pageable="true"
+				 Sortable="true"
+				 FilterMode="GridFilterMode.FilterMenu"
+				 Resizable="true"
+				 ShowColumnMenu="true">
+		<GridColumns>
+			<GridColumn Field="@(nameof(User.UserId))" Title="ID" />
+			<GridColumn Field="@(nameof(User.FirstName))" Title="First Name" />
+			<GridColumn Field="@(nameof(User.LastName))" Title="Last Name" />
+			<GridCommandColumn>
+				<GridCommandButton OnClick="@OpenFlyout">Add</GridCommandButton>
+			</GridCommandColumn>
+		</GridColumns>
+	</TelerikGrid>
 }
 
 @code {
@@ -86,5 +83,10 @@ else
 		{
 			ToastService.ShowError(e.Message, "Error");
 		}
+	}
+
+	private void OpenFlyout()
+	{
+		Flyout.Open();
 	}
 }
