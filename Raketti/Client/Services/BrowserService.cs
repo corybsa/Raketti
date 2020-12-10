@@ -17,7 +17,8 @@ namespace Raketti.Client.Services
 		}
 
 		[JSInvokable]
-		public static async Task OnBrowserResize() {
+		public static async Task OnBrowserResize()
+		{
 			await OnResize?.Invoke();
 		}
 
@@ -26,7 +27,8 @@ namespace Raketti.Client.Services
 			return await _js.InvokeAsync<int>("raketti.getHeight");
 		}
 
-		public async Task<int> GetWidth() {
+		public async Task<int> GetWidth()
+		{
 			return await _js.InvokeAsync<int>("raketti.getWidth");
 		}
 	}

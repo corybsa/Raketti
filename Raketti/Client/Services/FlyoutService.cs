@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
 using Raketti.Client.Shared;
 
 namespace Raketti.Client.Services
@@ -10,16 +11,26 @@ namespace Raketti.Client.Services
 	{
 		public event Action OnChange;
 		public bool IsOpen { get; set; } = false;
+		public string Title { get; set; }
+		public Type Content { get; set; }
 
 		private void NotifyDataChanged() => OnChange?.Invoke();
 
-		public void Open() {
+		public void Open(string title, Type content)
+		{
+			Title = title;
 			IsOpen = true;
+			Content = content;
+
 			NotifyDataChanged();
 		}
 
-		public void Close() {
+		public void Close()
+		{
 			IsOpen = false;
+			Title = null;
+			Content = null;
+
 			NotifyDataChanged();
 		}
 	}

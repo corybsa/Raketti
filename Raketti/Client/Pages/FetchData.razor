@@ -10,13 +10,6 @@
 
 <p>This component demonstrates fetching data from the server.</p>
 
-<style>
-	#user-table tr:hover {
-		background: hsl(0, 0%, 87%);
-		cursor: pointer;
-	}
-</style>
-
 @if (users == null)
 {
 	<p><em>Loading...</em></p>
@@ -87,6 +80,6 @@ else
 
 	private void OpenFlyout()
 	{
-		Flyout.Open();
+		Flyout.Open("Opened from FetchData", typeof(Counter));
 	}
 }

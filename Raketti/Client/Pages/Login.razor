@@ -74,7 +74,7 @@
 		int height = await BrowserService.GetHeight();
 		windowHeight = $"{height}px";
 
-		// let blazor know that the state changed
+		// let blazor know that the state changed so it rerenders the ui
 		StateHasChanged();
 	}
 }

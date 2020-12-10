@@ -24,7 +24,8 @@ namespace Raketti.Client.Services
 			return await _http.GetFromJsonAsync<DbResponse<User>>("api/test/users");
 		}
 
-		public async Task<DbResponse<User>> GetUser(int userId) {
+		public async Task<DbResponse<User>> GetUser(int userId)
+		{
 			return await _http.GetFromJsonAsync<DbResponse<User>>($"api/test/user/{userId}");
 		}
 	}
