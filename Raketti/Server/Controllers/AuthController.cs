@@ -17,6 +17,7 @@ using Raketti.Shared;
 
 namespace Raketti.Server.Controllers
 {
+	[Auth]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class AuthController : ControllerBase
@@ -30,6 +31,7 @@ namespace Raketti.Server.Controllers
 			_configuration = configuration;
 		}
 
+		[AllowAnonymous]
 		[HttpPost]
 		public async Task<IActionResult> Login(AuthInfo auth)
 		{
@@ -53,18 +55,23 @@ namespace Raketti.Server.Controllers
 			{
 				try
 				{
+					// connect to ldap
 					cn.Connect("ds05", 389);
+
+					// check username and password
 					cn.Bind($"LCSD\\{auth.Username}", auth.Password);
 					cn.Disconnect();
 				}
 				catch (LdapException e)
 				{
+					// username and password combination were wrong
 					response.Success = false;
 					response.Message = e.Message;
 					return BadRequest(response);
 				}
 				finally
 				{
+					// close connection to ldap
 					cn.Disconnect();
 					cn.Dispose();
 				}
@@ -75,9 +82,12 @@ namespace Raketti.Server.Controllers
 
 				try
 				{
+					// get user info from database
 					var user = (await _helper.ExecStoredProcedure<User>("sp_Users", parameters)).Data.First();
 					response.Data = user.UserId.ToString();
 					response.Message = CreateToken(user);
+
+					// save user info on client
 					Client.Services.UserService.user = user;
 				}
 				catch (Exception e)

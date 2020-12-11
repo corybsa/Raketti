@@ -26,6 +26,7 @@ namespace Raketti.Client
 
 		public override async Task<AuthenticationState> GetAuthenticationStateAsync()
 		{
+			// Get JWT
 			string authToken = await _localStorageService.GetItemAsStringAsync("authToken");
 
 			var identity = new ClaimsIdentity();
@@ -35,24 +36,13 @@ namespace Raketti.Client
 			{
 				try
 				{
+					// Parse JWT and send it with every request
 					identity = new ClaimsIdentity(ParseClaimsFromJwt(authToken), "jwt");
 					_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
-
-					/*foreach (var c in identity.Claims)
-					{
-						if (c.Type.Equals("exp"))
-						{
-							var expireTime = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(int.Parse(c.Value));
-
-							if (DateTime.UtcNow > expireTime)
-							{
-								throw new Exception("Token expired");
-							}
-						}
-					}*/
 				}
 				catch (Exception)
 				{
+					// Something went wrong, remove the token from loca storage.
 					await _localStorageService.RemoveItemAsync("authToken");
 					identity = new ClaimsIdentity();
 				}

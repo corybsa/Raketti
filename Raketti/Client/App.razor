@@ -1,5 +1,5 @@
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
-@inject Raketti.Client.Services.IAuthService AuthService
+@inject Services.IAuthService AuthService
 @inject IToastService ToastService
 
 <CascadingAuthenticationState>
@@ -22,10 +22,12 @@
 @code {
 	protected override async Task OnInitializedAsync()
 	{
+		// make sure we know who's logged in
 		if (await LocalStorage.ContainKeyAsync("userId"))
 		{
 			try
 			{
+				// Get the user id from localStorage and ask SQL who it is.
 				var userId = await LocalStorage.GetItemAsync<int>("userId");
 				var res = await AuthService.Check(userId);
 

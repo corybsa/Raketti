@@ -2,11 +2,9 @@
 @attribute [Authorize]
 @inject IToastService ToastService
 @inject AuthenticationStateProvider AuthStateProvider
-@inject Raketti.Client.Services.IFlyoutService Flyout
+@inject Services.IFlyoutService Flyout
 
 <h1>Hello, world!</h1>
-<TelerikButton OnClick="@Flyout.Open">Open Flyout</TelerikButton>
-<TelerikButton OnClick="@Flyout.Close">Close Flyout</TelerikButton>
 
 Welcome to your new app.
 
@@ -22,15 +20,3 @@ Welcome to your new app.
 		<a href="#" class="btn btn-primary">Go somewhere</a>
 	</div>
 </div>
-
-@code {
-	public void open()
-	{
-		Flyout.Open();
-	}
-
-	public void close()
-	{
-		Flyout.Close();
-	}
-}

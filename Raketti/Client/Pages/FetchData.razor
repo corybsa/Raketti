@@ -1,21 +1,14 @@
 @page "/fetchdata"
 @attribute [Authorize]
 @using Raketti.Shared
-@inject Raketti.Client.Services.IUserService UserService
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IToastService ToastService
-@inject Raketti.Client.Services.IFlyoutService Flyout
+@inject Services.IUserService UserService
+@inject Services.IFlyoutService Flyout
 
 <h1>Weather forecast</h1>
 
 <p>This component demonstrates fetching data from the server.</p>
-
-<style>
-	#user-table tr:hover {
-		background: hsl(0, 0%, 87%);
-		cursor: pointer;
-	}
-</style>
 
 @if (users == null)
 {
@@ -64,29 +57,9 @@ else
 		}
 	}
 
-	private async void GetUser(int userId)
+	private void OpenFlyout(GridCommandEventArgs e)
 	{
-		try
-		{
-			var res = await UserService.GetUser(userId);
-
-			if (!res.Success)
-			{
-				ToastService.ShowError(res.Info, "Error");
-			}
-			else
-			{
-				ToastService.ShowSuccess(res.Data[0].ToString());
-			}
-		}
-		catch (Exception e)
-		{
-			ToastService.ShowError(e.Message, "Error");
-		}
-	}
-
-	private void OpenFlyout()
-	{
-		Flyout.Open();
+		User user = (User)e.Item;
+		Flyout.Open<User>($"Info for {user.Username}", typeof(TestFlyoutContent), user);
 	}
 }

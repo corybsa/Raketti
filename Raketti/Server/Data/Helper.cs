@@ -15,6 +15,9 @@ namespace Raketti.Server
 	{
 		private readonly SqlConfiguration _sql;
 
+		// default empty contructor
+		public Helper() { }
+
 		public Helper(SqlConfiguration sql)
 		{
 			_sql = sql;
@@ -24,25 +27,37 @@ namespace Raketti.Server
 		{
 			var response = new DbResponse<T>();
 
+
+			if (_sql == null)
+			{
+				response.Success = false;
+				response.Info = "SqlConfiguration not found. Did you forget to pass SqlConfiguration to Helper?";
+				return response;
+			}
+
 			using (var conn = new SqlConnection(_sql.Value))
 			{
 				if (conn.State == ConnectionState.Closed)
 				{
+					// open connection
 					conn.Open();
 				}
 
 				try
 				{
+					// execute stored procedure
 					response.Success = true;
 					response.Data = (await conn.QueryAsync<T>(proc, parameters, commandType: CommandType.StoredProcedure)).ToList();
-					Console.WriteLine(GetStatement(proc, parameters, null));
 				}
 				catch (SqlException e)
 				{
-					string info = GetStatement(proc, parameters, e);
+					// get exec
+					string exec = GetStatement(proc, parameters, e);
 					response.Success = false;
-					response.Info = info;
-					Console.WriteLine(info);
+					response.Info = exec;
+					
+					// print exec
+					Console.WriteLine(exec);
 				}
 				catch (Exception e)
 				{
@@ -53,6 +68,7 @@ namespace Raketti.Server
 				{
 					if (conn.State == ConnectionState.Open)
 					{
+						// close connection
 						conn.Close();
 					}
 				}
