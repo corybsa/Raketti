@@ -13,6 +13,7 @@ namespace Raketti.Client.Services
 		public bool IsOpen { get; set; } = false;
 		public string Title { get; set; }
 		public Type Content { get; set; }
+		public dynamic Data { get; set; }
 
 		private void NotifyDataChanged() => OnChange?.Invoke();
 
@@ -23,6 +24,12 @@ namespace Raketti.Client.Services
 			Content = content;
 
 			NotifyDataChanged();
+		}
+
+		public void Open<T>(string title, Type content, T data)
+		{
+			Data = data;
+			Open(title, content);
 		}
 
 		public void Close()

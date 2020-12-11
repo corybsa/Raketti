@@ -57,29 +57,9 @@ else
 		}
 	}
 
-	private async void GetUser(int userId)
+	private void OpenFlyout(GridCommandEventArgs e)
 	{
-		try
-		{
-			var res = await UserService.GetUser(userId);
-
-			if (!res.Success)
-			{
-				ToastService.ShowError(res.Info, "Error");
-			}
-			else
-			{
-				ToastService.ShowSuccess(res.Data[0].ToString());
-			}
-		}
-		catch (Exception e)
-		{
-			ToastService.ShowError(e.Message, "Error");
-		}
-	}
-
-	private void OpenFlyout()
-	{
-		Flyout.Open("Opened from FetchData", typeof(Counter));
+		User user = (User)e.Item;
+		Flyout.Open<User>($"Info for {user.Username}", typeof(TestFlyoutContent), user);
 	}
 }

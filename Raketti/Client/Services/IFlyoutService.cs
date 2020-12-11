@@ -9,12 +9,14 @@ namespace Raketti.Client.Services
 {
 	public interface IFlyoutService
 	{
+		public event Action OnChange;
 		public bool IsOpen { get; set; }
 		public string Title { get; set; }
 		public Type Content { get; set; }
-		public event Action OnChange;
+		public dynamic Data { get; set; }
 
 		public void Open(string title, Type content);
+		public void Open<T>(string title, Type content, T data);
 		public void Close();
 	}
 }

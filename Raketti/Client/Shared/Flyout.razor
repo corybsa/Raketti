@@ -11,7 +11,7 @@
 <div style="height: calc(100% - 53px); padding: 10px; overflow: auto;">
 	@if (Service.Content != null)
 	{
-		@renderFragment(Service.Content)
+		@renderFragment(Service.Content, Service.Data)
 	}
 </div>
 
@@ -21,9 +21,14 @@
 		Service.OnChange += StateHasChanged;
 	}
 
-	private RenderFragment renderFragment(Type t) => builder =>
+	private RenderFragment renderFragment(Type t, dynamic data) => builder =>
 	{
 		builder.OpenComponent(0, t);
+
+		if(data != null) {
+			builder.AddAttribute(1, "Data", data);
+		}
+		
 		builder.CloseComponent();
 	};
 }
