@@ -55,7 +55,6 @@ namespace Raketti.Server
 							{
 								context.Response.Headers.Add("Token-Expired", "true");
 							}
-
 							return Task.CompletedTask;
 						}
 					};
