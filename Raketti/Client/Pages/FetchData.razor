@@ -1,10 +1,10 @@
 @page "/fetchdata"
 @attribute [Authorize]
 @using Raketti.Shared
-@inject Raketti.Client.Services.IUserService UserService
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IToastService ToastService
-@inject Raketti.Client.Services.IFlyoutService Flyout
+@inject Services.IUserService UserService
+@inject Services.IFlyoutService Flyout
 
 <h1>Weather forecast</h1>
 

@@ -1,10 +1,10 @@
 ﻿@layout TelerikLayout
 @inherits LayoutComponentBase
 @implements IDisposable
-@inject Raketti.Client.Services.IFlyoutService Flyout
-@inject Raketti.Client.Services.BrowserService BrowserService
+@inject Services.IFlyoutService Flyout
+@inject Services.BrowserService BrowserService
+@inject Services.IAuthService AuthService
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
-@inject Raketti.Client.Services.IAuthService AuthService
 @inject Microsoft.JSInterop.IJSRuntime js
 
 <style>
