@@ -77,7 +77,7 @@ namespace Raketti.Server.Controllers
 				}
 
 				var parameters = new DynamicParameters();
-				parameters.Add("StatementType", 1);
+				parameters.Add("StatementType", StatementType.Get);
 				parameters.Add("Username", auth.Username);
 
 				try

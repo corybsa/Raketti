@@ -28,7 +28,7 @@ namespace Raketti.Server.Controllers
 			try
 			{
 				var parameters = new DynamicParameters();
-				parameters.Add("StatementType", 1);
+				parameters.Add("StatementType", StatementType.Get);
 				response = await _helper.ExecStoredProcedure<User>("sp_Users", parameters);
 			}
 			catch (Exception e)
@@ -43,7 +43,7 @@ namespace Raketti.Server.Controllers
 		public async Task<IActionResult> GetUser(int userId)
 		{
 			var parameters = new DynamicParameters();
-			parameters.Add("StatementType", 1);
+			parameters.Add("StatementType", StatementType.Get);
 			parameters.Add("UserId", userId);
 			var response = await _helper.ExecStoredProcedure<User>("sp_Users", parameters);
 
@@ -54,7 +54,7 @@ namespace Raketti.Server.Controllers
 		public async Task<IActionResult> GetUserFromBody([FromBody] int userId)
 		{
 			var parameters = new DynamicParameters();
-			parameters.Add("StatementType", 1);
+			parameters.Add("StatementType", StatementType.Get);
 			parameters.Add("UserId", userId);
 			var response = await _helper.ExecStoredProcedure<User>("sp_Users", parameters);
 
@@ -66,7 +66,7 @@ namespace Raketti.Server.Controllers
 		public async Task<IActionResult> GetUserNoAuth([FromBody] int userId)
 		{
 			var parameters = new DynamicParameters();
-			parameters.Add("StatementType", 1);
+			parameters.Add("StatementType", StatementType.Get);
 			parameters.Add("UserId", userId);
 			var response = await _helper.ExecStoredProcedure<User>("sp_Users", parameters);
 
