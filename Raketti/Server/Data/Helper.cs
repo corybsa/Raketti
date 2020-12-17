@@ -91,7 +91,14 @@ namespace Raketti.Server
 			{
 				foreach (var name in parameters.ParameterNames)
 				{
-					sb.Append(" '").Append(parameters.Get<dynamic>(name)).Append("'");
+					if (parameters.Get<dynamic>(name) == null)
+					{
+						sb.Append(" 'null',");
+					}
+					else
+					{
+						sb.Append(" '").Append(parameters.Get<dynamic>(name)).Append("',");
+					}
 				}
 			}
 
