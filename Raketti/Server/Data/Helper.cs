@@ -93,7 +93,7 @@ namespace Raketti.Server
 				{
 					if (parameters.Get<dynamic>(name) == null)
 					{
-						sb.Append(" 'null',");
+						sb.Append(" null,");
 					}
 					else
 					{
@@ -102,7 +102,7 @@ namespace Raketti.Server
 				}
 			}
 
-			return sb.ToString();
+			return sb.Remove(sb.Length - 1, 1).ToString();
 		}
 	}
 }
