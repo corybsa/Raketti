@@ -7,7 +7,7 @@ namespace Raketti.Shared
 	public static class SystemRole
 	{
 		public const int GlobalAdmin = 1;
-		public const int SchoolAdmin = 2;
+		public const int Admin = 2;
 		public const int Teacher = 3;
 	}
 }

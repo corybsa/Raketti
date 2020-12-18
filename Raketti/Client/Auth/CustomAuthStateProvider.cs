@@ -39,12 +39,14 @@ namespace Raketti.Client
 					// Parse JWT and send it with every request
 					identity = new ClaimsIdentity(ParseClaimsFromJwt(authToken), "jwt");
 					_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
+					Services.AuthService.IsLoggedIn = true;
 				}
 				catch (Exception)
 				{
 					// Something went wrong, remove the token from loca storage.
 					await _localStorageService.RemoveItemAsync("authToken");
 					identity = new ClaimsIdentity();
+					Services.AuthService.IsLoggedIn = false;
 				}
 			}
 

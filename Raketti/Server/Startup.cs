@@ -11,19 +11,19 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Raketti.Shared;
 
 namespace Raketti.Server
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration)
-		{
-			Configuration = configuration;
-		}
+		public IConfiguration _configuration { get; }
+		public IWebHostEnvironment _environment { get; }
 
-		public IConfiguration Configuration { get; }
+		public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+		{
+			_configuration = configuration;
+			_environment = environment;
+		}
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -37,7 +37,7 @@ namespace Raketti.Server
 			{
 				services.AddSingleton(new SqlConfiguration(_configuration.GetConnectionString("Prod")));
 			}
-			
+
 			services.AddControllersWithViews();
 			services.AddRazorPages();
 
@@ -48,7 +48,7 @@ namespace Raketti.Server
 					{
 						ClockSkew = TimeSpan.Zero,
 						ValidateIssuerSigningKey = true,
-						IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+						IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration.GetSection("AppSettings:Token").Value)),
 						ValidateIssuer = false,
 						ValidateAudience = false,
 						ValidateLifetime = true

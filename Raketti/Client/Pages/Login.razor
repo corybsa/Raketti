@@ -48,6 +48,7 @@
 		if (result.Success)
 		{
 			user.Password = null;
+			Services.AuthService.IsLoggedIn = true;
 			await LocalStorage.SetItemAsync<string>("userId", result.Data);
 			await LocalStorage.SetItemAsync<string>("authToken", result.Message);
 			await AuthStateProvider.GetAuthenticationStateAsync();

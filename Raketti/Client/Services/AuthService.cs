@@ -10,6 +10,7 @@ namespace Raketti.Client.Services
 {
 	public class AuthService : IAuthService
 	{
+		public static bool IsLoggedIn { get; set; } = false;
 		private readonly HttpClient _http;
 
 		public AuthService(HttpClient http)

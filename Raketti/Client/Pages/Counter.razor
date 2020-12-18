@@ -1,5 +1,6 @@
 ﻿@page "/counter"
-@attribute [Authorize]
+@attribute [Authorize(Policy = Policies.IsGlobalAdmin)]
+@using Auth
 
 <h1>Counter</h1>
 
@@ -10,6 +11,8 @@
 @code {
 	private int currentCount = 0;
 
+	// restrict this particular method to admins
+	[Authorize(Policy = Policies.IsAdmin)]
 	private void IncrementCount()
 	{
 		currentCount += 2;

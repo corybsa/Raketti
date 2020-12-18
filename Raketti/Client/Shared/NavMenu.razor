@@ -46,6 +46,7 @@
 
 	private async void Logout()
 	{
+		Services.AuthService.IsLoggedIn = false;
 		await LocalStorage.RemoveItemAsync("authToken");
 		await LocalStorage.RemoveItemAsync("userId");
 		await AuthStateProvider.GetAuthenticationStateAsync();
