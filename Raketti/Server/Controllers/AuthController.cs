@@ -131,7 +131,8 @@ namespace Raketti.Server.Controllers
 			var claims = new List<Claim>
 			{
 				new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-				new Claim(ClaimTypes.Name, user.Username)
+				new Claim(ClaimTypes.Name, user.Username),
+				new Claim(ClaimTypes.Role, user.RoleId.ToString())
 			};
 
 			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
