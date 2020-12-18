@@ -43,10 +43,9 @@
 	{
 		var result = await AuthService.Login(user);
 
-		// hopefully clear password from memory
-
 		if (result.Success)
 		{
+			// hopefully clear password from memory
 			user.Password = null;
 			Services.AuthService.IsLoggedIn = true;
 			await LocalStorage.SetItemAsync<string>("userId", result.Data);
