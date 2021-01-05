@@ -1,4 +1,4 @@
-﻿@layout TelerikLayout
+@layout TelerikLayout
 @inherits LayoutComponentBase
 @implements IDisposable
 @inject Services.IFlyoutService Flyout
@@ -11,7 +11,7 @@
 	#flyout {
 		background: white;
 		position: fixed;
-		height: @windowHeight;
+		height: @(windowHeight)px;
 		width: 100%;
 		right: -100%;
 		display: block;
@@ -81,7 +81,7 @@
 </AuthorizeView>
 
 @code {
-	private string windowHeight;
+	private int windowHeight;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -91,14 +91,12 @@
 		Raketti.Client.Services.BrowserService.OnResize += BrowserHasResized;
 		await js.InvokeAsync<object>("raketti.registerResizeCallback");
 
-		var height = await BrowserService.GetHeight();
-		windowHeight = $"{height}px";
+		windowHeight = await BrowserService.GetHeight();
 	}
 
 	private async Task BrowserHasResized()
 	{
-		int height = await BrowserService.GetHeight();
-		windowHeight = $"{height}px";
+		windowHeight = await BrowserService.GetHeight();
 
 		// let blazor know that the state changed
 		StateHasChanged();
