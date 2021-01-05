@@ -1,4 +1,4 @@
-﻿@page "/login"
+@page "/login"
 @using Raketti.Shared
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthStateProvider
@@ -10,7 +10,7 @@
 
 <div class="main" style="background-image: url('images/color_pencils_vertical.jpg'); background-size: 100%;">
 	<div class="container-fluid">
-		<div class="row align-items-center justify-content-center" style="height: @windowHeight">
+		<div class="row align-items-center justify-content-center" style="height: @(windowHeight)px">
 			<div class="col-4">
 				<div class="card">
 					<div class="card-body">
@@ -37,7 +37,7 @@
 
 @code {
 	private AuthInfo user = new AuthInfo();
-	private string windowHeight;
+	private int windowHeight;
 
 	public async void HandleLogin()
 	{
@@ -65,14 +65,12 @@
 		Raketti.Client.Services.BrowserService.OnResize += BrowserHasResized;
 		await js.InvokeAsync<object>("raketti.registerResizeCallback");
 
-		var height = await BrowserService.GetHeight();
-		windowHeight = $"{height}px";
+		windowHeight = await BrowserService.GetHeight();
 	}
 
 	private async Task BrowserHasResized()
 	{
-		int height = await BrowserService.GetHeight();
-		windowHeight = $"{height}px";
+		windowHeight = await BrowserService.GetHeight();
 
 		// let blazor know that the state changed so it rerenders the ui
 		StateHasChanged();
