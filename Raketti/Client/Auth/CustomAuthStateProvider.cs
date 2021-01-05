@@ -43,7 +43,7 @@ namespace Raketti.Client
 				}
 				catch (Exception)
 				{
-					// Something went wrong, remove the token from loca storage.
+					// Something went wrong, remove the token from local storage.
 					await _localStorageService.RemoveItemAsync("authToken");
 					identity = new ClaimsIdentity();
 					Services.AuthService.IsLoggedIn = false;
