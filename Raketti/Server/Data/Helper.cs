@@ -77,7 +77,8 @@ namespace Raketti.Server
 			return response;
 		}
 
-		private string GetStatement(string proc, DynamicParameters parameters, SqlException e) {
+		private string GetStatement(string proc, DynamicParameters parameters, SqlException e = null)
+		{
 			var sb = new StringBuilder();
 
 			if (e != null)
