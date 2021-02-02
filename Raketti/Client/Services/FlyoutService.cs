@@ -37,6 +37,7 @@ namespace Raketti.Client.Services
 			IsOpen = false;
 			Title = null;
 			Content = null;
+			Data = null;
 
 			NotifyDataChanged();
 		}
