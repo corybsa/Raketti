@@ -60,10 +60,16 @@ namespace Raketti.Server
 					response.Success = false;
 					response.Info = exec;
 
+					// constraint error
+					if (e.Number == 547)
+					{
+						response.Info = "There are items associated with this record. The action can't be performed.";
+					}
+
 					// print exec
 					Console.WriteLine(exec);
 
-					throw new Exception(exec);
+					throw new Exception(response.Info);
 				}
 				catch (Exception e)
 				{
