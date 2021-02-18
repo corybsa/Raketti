@@ -112,7 +112,16 @@ namespace Raketti.Server
 					}
 					else
 					{
-						sb.Append(" '").Append(parameters.Get<dynamic>(name)).Append("',");
+						var p = parameters.Get<dynamic>(name);
+
+						if (p.GetType() == typeof(string))
+						{
+							sb.Append(" '").Append(p).Append("',");
+						}
+						else
+						{
+							sb.Append(" ").Append(p).Append(",");
+						}
 					}
 				}
 			}
