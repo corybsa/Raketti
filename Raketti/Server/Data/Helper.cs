@@ -120,7 +120,7 @@ namespace Raketti.Server
 						}
 						else
 						{
-							sb.Append(" ").Append(p).Append(",");
+							sb.Append(' ').Append(p).Append(',');
 						}
 					}
 				}
