@@ -59,7 +59,7 @@ namespace Raketti.Server.Controllers
 					cn.Connect("ds05", 389);
 
 					// check username and password
-					cn.Bind($"LCSD\\{auth.Username}", auth.Password);
+					cn.Bind($@"LCSD\{auth.Username}", auth.Password);
 					cn.Disconnect();
 				}
 				catch (LdapException e)
